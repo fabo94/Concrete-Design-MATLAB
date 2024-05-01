@@ -1,0 +1,12 @@
+% Function to get phi
+% Obtains phi based in the strain of the steel compared
+% to the yielding strain
+function phi = get_phi(epsilon_s,epsilon_y)
+if epsilon_s<=epsilon_y
+    phi = 0.65;
+elseif epsilon_s>=epsilon_y+0.003
+    phi = 0.9;
+else
+    phi = interp1([epsilon_y epsilon_y+0.003],[0.65 0.9],epsilon_s);
+end
+end
