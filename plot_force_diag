@@ -1,0 +1,60 @@
+% function to plot forces of a simple reinforced concrete beam
+% which has it's steel yielding
+function plot_force_diag(h,d,c,a,C,T)
+% Plot lines
+hold on
+title("Force diagram")
+xlabel("Force (kips)")
+ylabel("y (in)")
+% Put some annotations
+% force at concrete
+text(mean([0 C]),h-a/2+1,strcat("C = ",num2str(C)),"HorizontalAlignment","center","Color",'red')
+% Force at steel
+text(mean([-T 0]),(h-d)+1,strcat("T = ",num2str(T)),"HorizontalAlignment","center","Color",'b')
+% Annotation line for c
+plot([-0.6*T -0.6*T],[h-c h],'Color',0.5*[1 1 1] )
+plot([-0.6*T 0],[h h],'--','Color',0.5*[1 1 1] )
+plot([-0.6*T 0],[h-c h-c],'--','Color',0.5*[1 1 1] )
+% text for c
+text(-0.6*T,mean([h h-c]),strcat("c = ",num2str(c)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% Annotation line for h
+plot([0.8*C 0.8*C],[0 h],'Color',0.5*[1 1 1] )
+plot([0 0.8*C],[h h],'--','Color',0.5*[1 1 1] )
+plot([0 0.8*C],[0 0],'--','Color',0.5*[1 1 1] )
+% text for h
+text(0.8*C,mean([h 0]),strcat("h = ",num2str(h)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% Annotation line for d
+plot([-0.8*C -0.8*C],[h-d h],'Color',0.5*[1 1 1] )
+plot([-0.8*C 0],[h h],'--','Color',0.5*[1 1 1] )
+plot([-0.8*C  0],[h-d h-d],'--','Color',0.5*[1 1 1] )
+% text for d
+text(-0.8*C,mean([h-d h]),strcat("d = ",num2str(d)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% Annotation line for a
+plot([-0.2*C -0.2*C],[h-a h],'Color',0.5*[1 1 1] )
+plot([-0.2*C 0],[h h],'--','Color',0.5*[1 1 1] )
+plot([-0.2*C  0],[h-a h-a],'--','Color',0.5*[1 1 1] )
+% text for a
+text(-0.2*C,mean([h-a h]),strcat("a = ",num2str(a)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% plot vertical line of beam
+plot([0 0],[0 h],'Color','black')
+% plot neutral axis
+plot([-T T],[h-c h-c],'-.','Color',0.8*[1 1 1])
+% plot arrow compression force
+anArrow = annotation('arrow') ;
+anArrow.Parent = gca;
+x_start = C;
+y_start = h-a/2;
+delta_x = -x_start;
+delta_y = 0;
+anArrow.Position = [x_start, y_start, delta_x, delta_y];
+anArrow.Color = 'red';
+% plot arrow tension force
+anArrow = annotation('arrow') ;
+anArrow.Parent = gca;
+x_start = -T;
+y_start = h-d;
+delta_x = -x_start;
+delta_y = 0;
+anArrow.Position = [x_start, y_start, delta_x, delta_y];
+anArrow.Color = 'blue';
+end
