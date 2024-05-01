@@ -1,0 +1,39 @@
+% Function to calculate nominal moment of a reinforced concrete beam.
+% Some restrictions apply:
+% 1. It considers that the beam is "well-designed", whcih means that
+% the steel strain is greater than the steel yielding strain. If this
+% condition is not met, the program will return an error.
+% 2. It only considers the steel of the tension side of the beam and
+% ignores the contribution of steel to compression. Therefore, when introducing
+% As, introduce the tension steel area only.
+% 3. In case that you have several vertical layers of steel, please 
+% calculate d as the height of the beam minus the distance from the 
+% bottom to the mass-centroid of the tension beams.
+% 4. In case you don't know how to calculate beta1, you can use the function
+% "calculate_beta1" available in this repository:https://github.com/fabo94/Concrete-Design-MATLAB
+% 5. Please be sure that you are using consistent units
+function [Mn,T,C,epsilon_s,c,a] = get_Mn(As,fy,fc,b,d,beta1,epsilon_y)
+% As: area of tension steel
+% fy: minimum yielding stress of the steel
+% fc: f'c compression resistance of the concrete at 28 days
+% b: width of the beam
+% d: height of the beam minus the distance from the bottom of the beam to the mass-centroid 
+%    of the tension steel
+% beta1: parameter based on f'c 
+% epsilon_y: yielding strain of steel. Can be calculated as fy/ModulusOfYoungOfSteel(Es)
+% 
+% Calculate the neutral axis position assuming that the steel is yielding
+a = As*fy/(0.85*fc*b); 
+c = a/beta1; 
+% Calculate epsilon_s for the assumed case
+epsilon_s = (d-c)*0.003/c;
+% If assumption was true, calculate Mn
+if epsilon_s<epsilon_y
+    error("Bad design! This type of beam is not yielding at ultimate conditions. Therefore, it is out of the scope of this program.")
+else
+    Mn = As*fy*(d-a/2) * (12/1)^2;
+end
+% Calculate tension and compression
+T = As*fy* (12/1)^2;
+C = 0.85*fc*a*b* (12/1)^2;
+end
