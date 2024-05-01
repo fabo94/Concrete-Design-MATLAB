@@ -1,0 +1,43 @@
+% function to plot strain diagram
+function plot_strain_diag(h,d,c,epsilon_s)
+% Plot lines
+hold on
+title("Strain diagram")
+xlabel("\epsilon")
+ylabel("y (in)")
+% plot vertical line
+plot([0 0],[0 h],'Color','black')
+% plot neutral axis
+plot([-epsilon_s epsilon_s],[h-c h-c],'-.','Color',0.8*[1 1 1])
+% plot diagonal line
+plot([(d-h)/d*(0.003+epsilon_s)-epsilon_s   0.003],[0   h],'Color','black')
+% plot compression line
+plot([0 0.003],[h h],'Color','black')
+% plot tension line at steel
+plot([-epsilon_s 0],[h-d h-d],'Color','blue')
+% plot tension line at concrete
+plot([(d-h)/d*(0.003+epsilon_s)-epsilon_s   0],[0 0],'Color','black')
+% Put some annotations
+% epsiol at concrete
+text(mean([0 0.003]),h+1,"\epsilon_c = 0.003","HorizontalAlignment","center")
+% epsiol at steel
+text(mean([-epsilon_s 0]),(h-d)+1,strcat("\epsilon_s = ",num2str(epsilon_s)),"HorizontalAlignment","center","Color",'b')
+% Annotation line for c
+plot([-0.001 -0.001],[h-c h],'Color',0.5*[1 1 1] )
+plot([-0.001 0],[h h],'--','Color',0.5*[1 1 1] )
+plot([-0.001 0],[h-c h-c],'--','Color',0.5*[1 1 1] )
+% text for c
+text(-0.001,mean([h h-c]),strcat("c = ",num2str(c)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% Annotation line for h
+plot([0.005 0.005],[0 h],'Color',0.5*[1 1 1] )
+plot([0.003 0.005],[h h],'--','Color',0.5*[1 1 1] )
+plot([0 0.005],[0 0],'--','Color',0.5*[1 1 1] )
+% text for h
+text(0.005,mean([h 0]),strcat("h = ",num2str(h)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% Annotation line for d
+plot([0.0035 0.0035],[h-d h],'Color',0.5*[1 1 1] )
+plot([0.003 0.0035],[h h],'--','Color',0.5*[1 1 1] )
+plot([0 0.0035],[h-d h-d],'--','Color',0.5*[1 1 1] )
+% text for d
+text(0.0035,mean([h-d h]),strcat("d = ",num2str(d)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+end
