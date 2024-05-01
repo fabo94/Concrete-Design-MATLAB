@@ -1,0 +1,12 @@
+% This function calculates the parameter beta1 based in the 
+% compression resistance of the concrete, fc
+% Please use units of psi.
+function beta1 = get_beta1(fc)
+if fc<=4000 % psi
+    beta1 = 0.85;
+elseif fc>=8000 % psi
+    beta1 = 0.65;
+else
+    beta1 = interp1( [4000 8000] , [0.85 0.65] , fc ); 
+end
+end
