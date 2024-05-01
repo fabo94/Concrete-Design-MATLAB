@@ -1,0 +1,43 @@
+clear all;
+close all;
+clc;
+
+% a) Data
+% Beam geometry
+h = 26/12; % (ft)
+b = 12/12; % (ft)
+L = 24; % (ft)
+d = (23+3/8)/12; % (ft)
+% Concrete information
+fc = 4000; % f'c (psi)
+% Steel information
+fy = 60000; % minimum yielding strength of steel (psi)
+Es = 29000*1000; % modulus of elasticity of steel (psi)
+As = 3*1.56; % steel area (in^2) - source https://lpg.steeldynamics.com/pdf/SDI-Long-Products-Group-Product-Guide.pdf
+
+% Calculations
+epsilon_y = fy/Es; % yield strain at steel
+As = As*(1/12)^2; % ft^2
+
+% b) Compute the design strength
+% Get beta 1
+beta1 = get_beta1(fc);
+% Get nominal moment
+[Mn,T,C,epsilon_s,c,a] = get_Mn(As,fy,fc,b,d,beta1,epsilon_y); % lb-ft
+% Get phi
+phi = get_phi(epsilon_s,epsilon_y);
+% Get design strength
+design_strength = phi * Mn; % lb-ft
+design_strength = design_strength/1000; % kips-ft 
+
+% c) Plots
+figure('units','normalized','outerposition',[0 0 1 1],'Color',"white")
+% Create strain diagram
+subplot(1,3,1)
+plot_strain_diag(h*12,d*12,c*12,epsilon_s);
+% Create stress diagram
+subplot(1,3,2)
+plot_stress_diag(h*12,d*12,c*12,fc/1000,a*12,fy/1000);
+% Create force diagram
+subplot(1,3,3)
+plot_force_diag(h*12,d*12,c*12,a*12,C/1000,T/1000);
