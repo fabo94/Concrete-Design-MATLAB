@@ -1,4 +1,5 @@
-% function to plot strain diagram
+% function to plot strain diagram of a simple beam that has
+% it's steel yielding
 function plot_strain_diag(h,d,c,epsilon_s)
 % Plot lines
 hold on
