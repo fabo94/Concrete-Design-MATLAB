@@ -1,0 +1,66 @@
+% function to plot stress diagram of a simple beam that
+% has it's steel yielding
+function plot_stress_diag(h,d,c,fc,a,fy)
+% Plot lines
+hold on
+title("Stress diagram")
+xlabel("\sigma (ksi)")
+ylabel("y (in)")
+% Put some annotations
+% sigma at concrete
+text(mean([0 0.85*fc]),h+1,num2str(0.85*fc),"HorizontalAlignment","center","Color",'red')
+% sigma at steel
+text(mean([-fy 0]),(h-d)+1,strcat("fs = ",num2str(fy)),"HorizontalAlignment","center","Color",'b')
+% Annotation line for c
+plot([-10 -10],[h-c h],'Color',0.5*[1 1 1] )
+plot([-10 0],[h h],'--','Color',0.5*[1 1 1] )
+plot([-10 0],[h-c h-c],'--','Color',0.5*[1 1 1] )
+% text for c
+text(-10,mean([h h-c]),strcat("c = ",num2str(c)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% Annotation line for h
+plot([15 15],[0 h],'Color',0.5*[1 1 1] )
+plot([0.85*fc 15],[h h],'--','Color',0.5*[1 1 1] )
+plot([0 15],[0 0],'--','Color',0.5*[1 1 1] )
+% text for h
+text(15,mean([h 0]),strcat("h = ",num2str(h)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% Annotation line for d
+plot([-15 -15],[h-d h],'Color',0.5*[1 1 1] )
+plot([-15 0],[h h],'--','Color',0.5*[1 1 1] )
+plot([-15  0],[h-d h-d],'--','Color',0.5*[1 1 1] )
+% text for d
+text(-15,mean([h-d h]),strcat("d = ",num2str(d)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% Annotation line for a
+plot([9 9],[h-a h],'Color',0.5*[1 1 1] )
+plot([9 0],[h h],'--','Color',0.5*[1 1 1] )
+plot([9  0],[h-a h-a],'--','Color',0.5*[1 1 1] )
+% text for a
+text(9,mean([h-a h]),strcat("a = ",num2str(a)),"HorizontalAlignment","center","Rotation",90,"BackgroundColor","white")
+% plot vertical line of beam
+plot([0 0],[0 h],'Color','black')
+% plot neutral axis
+plot([-fy 4*0.85*fc],[h-c h-c],'-.','Color',0.8*[1 1 1])
+% plot vertical line of compression stress
+plot([0.85*fc   0.85*fc],[h   h-a],'Color','red')
+% Create 4 arrows that go from the red vertical line to the black vertical
+% line
+ys_arrows = linspace(0,a,4) + h-a;
+for i = 1:length(ys_arrows)
+    anArrow = annotation('arrow') ;
+    anArrow.Parent = gca;
+    x_start = 0.85*fc;
+    y_start = ys_arrows(i);
+    delta_x = -x_start;
+    delta_y = 0;
+    anArrow.Position = [x_start, y_start, delta_x, delta_y];
+    anArrow.Color = 'red';
+end
+% Plot steel stress arrow
+anArrow = annotation('arrow') ;
+anArrow.Parent = gca;
+x_start = -fy;
+y_start = h-d;
+delta_x = -x_start;
+delta_y = 0;
+anArrow.Position = [x_start, y_start, delta_x, delta_y];
+anArrow.Color = 'blue';
+end
